@@ -1,0 +1,29 @@
+version: "2"
+
+services:
+  mysql:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      # MYSQL_DATABASE: mydb
+      MYSQL_USER: dbuser
+      MYSQL_PASSWORD: 123456
+  php:
+    build: .
+    links:
+      - mysql
+    ports:
+      - "8000:80"
+      - "4430:443"
+      - "8080:8080"
+      - "9000:9000"
+    volumes:
+      - ../..:/app
+      - ./script:/opt/script
+    environment:
+      - RUN_FILE=custom.sh
+      # - WEB_DOCUMENT_ROOT=/app
+      # - WEB_DOCUMENT_INDEX=index.php
+      # - WEB_ALIAS_DOMAIN=*.vm
